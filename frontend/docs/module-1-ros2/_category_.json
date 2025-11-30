@@ -1,0 +1,8 @@
+{
+  "label": "Module 1: ROS 2 Fundamentals",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Learn the fundamentals of Robot Operating System 2 (ROS 2), including nodes, topics, services, and robot descriptions."
+  }
+}

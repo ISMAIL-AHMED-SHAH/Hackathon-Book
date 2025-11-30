@@ -1,0 +1,76 @@
+# Docker Compose configuration for RAG Query Backend
+# Development environment with hot-reload
+# Per research.md Decision 9
+
+version: '3.9'
+
+services:
+  # FastAPI Backend Service
+  fastapi:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: rag-query-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      # Override Redis URL to use Docker service name
+      - REDIS_URL=redis://redis:6379/0
+      - ENV=development
+      - LOG_LEVEL=DEBUG
+    volumes:
+      # Mount source code for hot-reload
+      - ./backend/src:/app/src:ro
+      - ./backend/tests:/app/tests:ro
+      - ./backend/scripts:/app/scripts:ro
+    depends_on:
+      - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - rag-network
+
+  # Redis Service (for rate limiting)
+  redis:
+    image: redis:7-alpine
+    container_name: rag-query-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      # Persist Redis data (optional for development)
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - rag-network
+
+# Networks
+networks:
+  rag-network:
+    driver: bridge
+
+# Volumes
+volumes:
+  redis-data:
+    driver: local
+
+# Notes:
+# - Qdrant and Neon Postgres are cloud services (not containerized)
+# - OpenAI API is external service (API key in .env)
+# - Better-Auth is external service (secret in .env)
+# - Start services: docker-compose up -d
+# - View logs: docker-compose logs -f fastapi
+# - Stop services: docker-compose down
+# - Rebuild: docker-compose up -d --build

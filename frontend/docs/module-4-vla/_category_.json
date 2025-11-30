@@ -1,0 +1,8 @@
+{
+  "label": "Module 4: Vision-Language-Action",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Bridge language models and robotic systems to enable voice commands, multimodal perception, and embodied AI applications."
+  }
+}

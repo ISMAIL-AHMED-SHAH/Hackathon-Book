@@ -1,0 +1,349 @@
+openapi: 3.0.3
+info:
+  title: Textbook Chatbot API
+  description: RAG-powered chatbot integration for Physical AI textbook frontend
+  version: 1.0.0
+  contact:
+    name: Hackathon Book Project
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: https://api.example.com
+    description: Production server (TBD)
+
+paths:
+  /v1/query:
+    post:
+      summary: Submit chatbot query
+      description: Send a user question to the RAG system and receive an AI-generated answer with source citations
+      operationId: submitQuery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatbotQuery'
+            examples:
+              simple_query:
+                summary: Simple question without selected text
+                value:
+                  query_text: "What are ROS 2 nodes?"
+                  chapter_id: "ch-ros2-fundamentals"
+                  user_id: "guest-user"
+              query_with_selection:
+                summary: Question with highlighted text
+                value:
+                  query_text: "Explain this concept in simpler terms"
+                  chapter_id: "ch-ros2-topics"
+                  user_id: "guest-user"
+                  selected_text: "ROS 2 topics use a publish-subscribe pattern for asynchronous communication"
+      responses:
+        '200':
+          description: Successful response with generated answer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatbotResponse'
+              examples:
+                fully_grounded:
+                  summary: High-confidence answer
+                  value:
+                    answer: "ROS 2 nodes are fundamental building blocks that represent a single process performing a specific task. They communicate via topics, services, and actions."
+                    sources:
+                      - chunk_id: "chunk-001"
+                        chapter_id: "ch-ros2-fundamentals"
+                        section_title: "Node Basics"
+                        content_excerpt: "ROS 2 nodes are processes that perform computation..."
+                        similarity_score: 0.85
+                        page_number: 12
+                      - chunk_id: "chunk-042"
+                        chapter_id: "ch-ros2-fundamentals"
+                        section_title: "Node Communication"
+                        content_excerpt: "Nodes communicate using topics (pub/sub), services (req/res)..."
+                        similarity_score: 0.72
+                    confidence_score: 0.79
+                    grounding_status: "fully_grounded"
+                    processing_time_ms: 6826
+                    metadata:
+                      query_text: "What are ROS 2 nodes?"
+                      chapter_id: "ch-ros2-fundamentals"
+                      timestamp: "2025-11-30T14:23:45Z"
+        '400':
+          description: Invalid request format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missing_query:
+                  summary: Missing required field
+                  value:
+                    error_code: "VALIDATION_ERROR"
+                    message: "query_text is required and cannot be empty"
+                query_too_long:
+                  summary: Query exceeds max length
+                  value:
+                    error_code: "VALIDATION_ERROR"
+                    message: "query_text must not exceed 1000 characters"
+        '404':
+          description: No relevant content found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                no_context:
+                  summary: Question not answerable from textbook
+                  value:
+                    error_code: "CONTEXT_NOT_FOUND"
+                    message: "I cannot find relevant information in the textbook to answer this question."
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                rate_limit:
+                  summary: Too many requests
+                  value:
+                    error_code: "RATE_LIMIT_EXCEEDED"
+                    message: "Too many requests. Please wait before submitting another query."
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                server_error:
+                  summary: Backend processing failed
+                  value:
+                    error_code: "INTERNAL_ERROR"
+                    message: "An unexpected error occurred while processing your query."
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                service_down:
+                  summary: Backend services unavailable
+                  value:
+                    error_code: "SERVICE_UNAVAILABLE"
+                    message: "The chatbot service is temporarily unavailable. Please try again later."
+
+  /health:
+    get:
+      summary: Health check
+      description: Check if the backend API is available and operational
+      operationId: getHealth
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "healthy"
+                timestamp: "2025-11-30T14:23:45Z"
+                services:
+                  vector_db: "connected"
+                  llm: "connected"
+        '503':
+          description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "unhealthy"
+                timestamp: "2025-11-30T14:23:45Z"
+                services:
+                  vector_db: "disconnected"
+                  llm: "connected"
+
+components:
+  schemas:
+    ChatbotQuery:
+      type: object
+      required:
+        - query_text
+        - chapter_id
+        - user_id
+      properties:
+        query_text:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          description: User's question or query
+          example: "What are ROS 2 nodes?"
+        chapter_id:
+          type: string
+          nullable: true
+          description: Current chapter ID for context (null for general queries)
+          example: "ch-ros2-fundamentals"
+        user_id:
+          type: string
+          minLength: 1
+          description: User identifier (default 'guest-user' for anonymous users)
+          example: "guest-user"
+        selected_text:
+          type: string
+          maxLength: 500
+          description: Optional highlighted text for contextual queries
+          example: "ROS 2 topics use a publish-subscribe pattern"
+
+    ChatbotResponse:
+      type: object
+      required:
+        - answer
+        - sources
+        - confidence_score
+        - grounding_status
+        - processing_time_ms
+        - metadata
+      properties:
+        answer:
+          type: string
+          description: AI-generated answer to the user's question
+          example: "ROS 2 nodes are fundamental building blocks..."
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceCitation'
+          minItems: 0
+          maxItems: 5
+          description: Source citations from textbook content
+        confidence_score:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+          description: Average similarity score of top 3 sources
+          example: 0.79
+        grounding_status:
+          type: string
+          enum: [fully_grounded, partially_grounded, speculative]
+          description: |
+            Answer grounding quality:
+            - fully_grounded: confidence >= 0.7
+            - partially_grounded: 0.3 <= confidence < 0.7
+            - speculative: confidence < 0.3
+          example: "fully_grounded"
+        processing_time_ms:
+          type: integer
+          description: Backend processing time in milliseconds
+          example: 6826
+        metadata:
+          type: object
+          required:
+            - query_text
+            - chapter_id
+            - timestamp
+          properties:
+            query_text:
+              type: string
+              description: Original user query
+              example: "What are ROS 2 nodes?"
+            chapter_id:
+              type: string
+              nullable: true
+              description: Context chapter ID
+              example: "ch-ros2-fundamentals"
+            timestamp:
+              type: string
+              format: date-time
+              description: ISO 8601 timestamp
+              example: "2025-11-30T14:23:45Z"
+
+    SourceCitation:
+      type: object
+      required:
+        - chunk_id
+        - chapter_id
+        - section_title
+        - content_excerpt
+        - similarity_score
+      properties:
+        chunk_id:
+          type: string
+          description: Vector database chunk identifier
+          example: "chunk-001"
+        chapter_id:
+          type: string
+          description: Source chapter identifier
+          example: "ch-ros2-fundamentals"
+        section_title:
+          type: string
+          description: Section heading where content was found
+          example: "Node Basics"
+        content_excerpt:
+          type: string
+          description: Text snippet from the source (first 200 characters)
+          example: "ROS 2 nodes are processes that perform computation..."
+        similarity_score:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+          description: Cosine similarity to query (0.0-1.0)
+          example: 0.85
+        page_number:
+          type: integer
+          nullable: true
+          description: Optional page reference
+          example: 12
+
+    ErrorResponse:
+      type: object
+      required:
+        - error_code
+        - message
+      properties:
+        error_code:
+          type: string
+          enum:
+            - VALIDATION_ERROR
+            - CONTEXT_NOT_FOUND
+            - RATE_LIMIT_EXCEEDED
+            - INTERNAL_ERROR
+            - SERVICE_UNAVAILABLE
+          description: Machine-readable error code
+          example: "CONTEXT_NOT_FOUND"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "I cannot find relevant information in the textbook to answer this question."
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy]
+          description: Overall service health status
+          example: "healthy"
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp
+          example: "2025-11-30T14:23:45Z"
+        services:
+          type: object
+          description: Health status of dependent services
+          properties:
+            vector_db:
+              type: string
+              enum: [connected, disconnected]
+              example: "connected"
+            llm:
+              type: string
+              enum: [connected, disconnected]
+              example: "connected"

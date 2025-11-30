@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python scripts/create_collection_http.py:*)",
+      "Bash(python scripts/add_test_data.py:*)",
+      "Bash(uvicorn:*)",
+      "WebFetch(domain:docusaurus.io)",
+      "Bash(npx create-docusaurus@latest:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

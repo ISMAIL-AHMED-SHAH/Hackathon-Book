@@ -1,0 +1,8 @@
+{
+  "label": "Module 2: Gazebo Simulation",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Learn to create and manage robot simulations using Gazebo, the industry-standard robotics simulator."
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(unzip:*)",
+      "Bash(ls -la \"C:\\Code\\spec-kit\\hackathon-book\\.claude\\agents\"\" && ls -la \"C:Codespec-kithackathon-book.claudeskills\"\")",
+      "Bash(dir:*)",
+      "Bash(dir \"C:\\Code\\spec-kit\\hackathon-book\\.claude\\skills\")",
+      "Bash(git fetch:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(.specify/scripts/bash/create-phr.sh:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(if [ -f \".specify/scripts/bash/create-phr.sh\" ])",
+      "Bash(then echo \"Script exists\")",
+      "Bash(else echo \"Script not found\")",
+      "Bash(fi:*)",
+      "Bash(python -m black:*)",
+      "Bash(python -c:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -1,0 +1,110 @@
+# Pre-commit hooks for RAG Query Backend
+# Enforces Constitution Rule I (Code Quality & Standards)
+# Run: pre-commit install (first time setup)
+# Run: pre-commit run --all-files (manual check)
+
+repos:
+  # Black - Python code formatter
+  - repo: https://github.com/psf/black
+    rev: 23.12.1
+    hooks:
+      - id: black
+        language_version: python3
+        args: ['--line-length=100']
+        files: \.py$
+
+  # Flake8 - Python linter
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.1.0
+    hooks:
+      - id: flake8
+        args: ['--config=backend/setup.cfg']
+        files: ^backend/.*\.py$
+        additional_dependencies:
+          - flake8-docstrings
+          - flake8-bugbear
+
+  # Mypy - Static type checker
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.7.1
+    hooks:
+      - id: mypy
+        args: ['--strict', '--config-file=pyproject.toml']
+        files: ^src/.*\.py$
+        additional_dependencies:
+          - pydantic>=2.5.0
+          - types-redis
+
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      # Prevent large files from being committed
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+
+      # Check for files that would conflict in case-insensitive filesystems
+      - id: check-case-conflict
+
+      # Check for merge conflicts
+      - id: check-merge-conflict
+
+      # Check YAML files are valid
+      - id: check-yaml
+        exclude: ^\.github/
+
+      # Check TOML files are valid
+      - id: check-toml
+
+      # Check JSON files are valid
+      - id: check-json
+        exclude: ^frontend/
+
+      # Ensure files end with a newline
+      - id: end-of-file-fixer
+        exclude: \.min\.(js|css)$
+
+      # Remove trailing whitespace
+      - id: trailing-whitespace
+        exclude: \.md$
+
+      # Prevent committing to main/master directly
+      - id: no-commit-to-branch
+        args: ['--branch', 'main', '--branch', 'master']
+
+      # Detect private keys
+      - id: detect-private-key
+
+      # Check for debug statements (pdb, breakpoint)
+      - id: debug-statements
+
+  # Additional Python checks
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      # Check for eval() usage
+      - id: python-check-blanket-noqa
+
+      # Check for # fmt: off without # fmt: on
+      - id: python-check-blanket-type-ignore
+
+      # Prevent deprecated mock import
+      - id: python-use-type-annotations
+
+# Configuration
+default_language_version:
+  python: python3
+
+# Fail fast on first hook failure
+fail_fast: false
+
+# Skip hooks for specific files
+exclude: |
+  (?x)^(
+    .*\.min\.(js|css)|
+    .*\.egg-info/|
+    build/|
+    dist/|
+    \.eggs/|
+    htmlcov/
+  )$

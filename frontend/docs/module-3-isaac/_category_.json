@@ -1,0 +1,8 @@
+{
+  "label": "Module 3: NVIDIA Isaac",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Explore NVIDIA Isaac Sim and Isaac ROS for AI-powered robotics simulation and real-time perception."
+  }
+}

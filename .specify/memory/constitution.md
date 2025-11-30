@@ -1,55 +1,65 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version: 0.0.0 → 1.0.0
+- Modified principles: N/A (initial ratification)
+- Added sections: 5 principle sections (Code Quality & Standards, Testing Requirements, Error Handling & API Contracts, Educational Content Standards, Security & Authentication)
+- Removed sections: None
+- Templates requiring updates:
+  ✅ plan-template.md: Updated constitution check alignment
+  ✅ spec-template.md: Aligned with requirements standards
+  ✅ tasks-template.md: Task categorization reflects principles
+- Follow-up TODOs: None
+-->
+
+# Physical AI Textbook Platform Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Code Quality & Standards
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+All Python code (FastAPI backend, RAG pipeline logic) MUST use 100% type hints validated by Mypy or equivalent static type checker. All code MUST pass a single-line formatter (Black) and a standard linter (Flake8) with zero errors before commit.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+**Rationale**: Type safety prevents runtime errors in production, especially critical for RAG pipelines processing educational content. Consistent formatting ensures maintainability across the educational content generation system and API codebase.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### II. Testing Requirements
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+All API endpoints and core logic functions MUST maintain a minimum of 90% test coverage. Every Acceptance Criterion defined in a feature specification MUST be traceable to at least one test case that validates that criterion.
 
-### [PRINCIPLE_6_NAME]
+**Rationale**: High test coverage ensures reliability of the textbook platform and RAG chatbot. Specification-anchored tests guarantee that educational features deliver on their promises and learning outcomes are measurable.
 
+### III. Error Handling & API Contracts
 
-[PRINCIPLE__DESCRIPTION]
+All backend API errors MUST return a standardized JSON object with the structure `{"error_code": "...", "message": "..."}`. HTTP status codes MUST be used semantically: 2xx for success, 4xx for client errors, 5xx for server errors. Specifically, `401 Unauthorized` for missing/invalid authentication tokens and `403 Forbidden` for valid authentication but insufficient permissions.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+**Rationale**: Standardized error handling enables the frontend (Docusaurus) and RAG chatbot to provide clear, actionable feedback to students. Semantic HTTP status codes ensure correct error recovery and debugging in the learning platform.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### IV. Educational Content Standards (Docusaurus)
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Each textbook chapter (markdown file) MUST introduce a maximum of 5 new technical concepts to manage cognitive load. All content MUST be written for a B1 proficiency level to ensure accessibility. All chapters MUST include at least one concrete, runnable code example demonstrating the concepts taught.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**Rationale**: Cognitive load limits prevent overwhelming students learning Physical AI and Robotics. B1 proficiency ensures global accessibility. Runnable examples enable hands-on learning, critical for mastering ROS 2, Gazebo, and NVIDIA Isaac platforms.
+
+### V. Security & Authentication
+
+All `POST` and `PUT` endpoints MUST be authenticated using the Better-Auth service via a valid Bearer Token in the `Authorization` header. User credentials and API keys MUST NEVER be hardcoded; they MUST be stored in environment variables and managed via `.env` files excluded from version control.
+
+**Rationale**: Authentication protects user data and personalization features. Better-Auth integration enables signup/signin flows that collect user background for content personalization. Secure credential management prevents exposure of database connection strings and API keys for OpenAI/Qdrant services.
+
+## Development Workflow
+
+All feature work MUST follow the Spec-Driven Development (SDD) workflow: Constitution → Specify → Clarify → Plan → Tasks → Implement. Each phase MUST produce the required artifacts (spec.md, plan.md, tasks.md) before implementation begins.
+
+**Pull Request Requirements**: All PRs MUST include links to the corresponding specification and demonstrate that acceptance criteria are met. Code reviews MUST verify compliance with all five core principles before approval.
+
+**Test-Driven Development**: For critical features (RAG pipeline, authentication, content generation), tests MUST be written first, approved by stakeholders, fail initially, then implementation MUST make them pass (Red-Green-Refactor cycle).
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other practices and guidelines. Amendments require:
+1. Documentation of the proposed change with rationale
+2. Approval from project maintainers
+3. Migration plan for existing code that violates the new rules
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+All PRs and code reviews MUST verify compliance with this constitution. Any introduction of complexity (additional abstractions, new dependencies, architectural patterns) MUST be justified against the principles above.
+
+**Version**: 1.0.0 | **Ratified**: 2025-11-28 | **Last Amended**: 2025-11-28
