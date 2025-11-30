@@ -21,6 +21,9 @@ redis>=5.0.0
 # HTTP client
 httpx>=0.25.0
 
+# Gradio (for Hugging Face Spaces)
+gradio>=4.0.0
+
 # Configuration
 python-dotenv>=1.0.0
 
