@@ -42,7 +42,7 @@ jobs:
 
       - name: Build website
         env:
-          REACT_APP_API_URL: https://your-backend-api.com  # TODO: Update with actual backend URL
+          REACT_APP_API_URL: http://localhost:8000  # Local development URL (update when backend is deployed)
           REACT_APP_API_TIMEOUT: 30000
         run: npm run build
 
