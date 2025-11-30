@@ -22,17 +22,15 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  // TODO: Replace 'your-username' with your actual GitHub username
-  url: 'https://your-username.github.io',
+  url: 'https://ismail-ahmed-shah.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/hackathon-book/',
+  baseUrl: '/Hackathon-Book/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  // TODO: Replace 'your-username' with your actual GitHub username
-  organizationName: 'your-username',
-  projectName: 'hackathon-book', // Repository name
+  organizationName: 'ISMAIL-AHMED-SHAH',
+  projectName: 'Hackathon-Book', // Repository name
 
   // Trailing slash configuration for GitHub Pages
   trailingSlash: false,
@@ -111,7 +109,7 @@ const config: Config = {
           label: 'Textbook',
         },
         {
-          href: 'https://github.com/your-username/hackathon-book',
+          href: 'https://github.com/ISMAIL-AHMED-SHAH/Hackathon-Book',
           label: 'GitHub',
           position: 'right',
         },
@@ -159,7 +157,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub Repository',
-              href: 'https://github.com/your-username/hackathon-book',
+              href: 'https://github.com/ISMAIL-AHMED-SHAH/Hackathon-Book',
             },
           ],
         },
