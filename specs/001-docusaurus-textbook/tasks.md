@@ -168,11 +168,11 @@
 
 ### Implementation for User Story 5
 
-- [ ] T068 [US5] Verify Docusaurus classic preset includes doc pagination (Next/Previous links) - this is enabled by default
-- [ ] T069 [US5] Test chapter navigation locally: navigate to any chapter, scroll to bottom, verify "Next Chapter" and "Previous Chapter" links appear
-- [ ] T070 [US5] Test navigation on first chapter: navigate to first chapter (Module 1: ROS 2 Nodes), verify no "Previous Chapter" link appears
-- [ ] T071 [US5] Test navigation on last chapter: navigate to last chapter (Module 4: Capstone), verify no "Next Chapter" link appears
-- [ ] T072 [US5] Test sequential flow: start at first chapter, click "Next" repeatedly, verify chapters load in correct module/sidebar order
+- [X] T068 [US5] Verify Docusaurus classic preset includes doc pagination (Next/Previous links) - this is enabled by default
+- [X] T069 [US5] Test chapter navigation locally: navigate to any chapter, scroll to bottom, verify "Next Chapter" and "Previous Chapter" links appear
+- [X] T070 [US5] Test navigation on first chapter: navigate to first chapter (Module 1: ROS 2 Nodes), verify no "Previous Chapter" link appears
+- [X] T071 [US5] Test navigation on last chapter: navigate to last chapter (Module 4: Capstone), verify no "Next Chapter" link appears
+- [X] T072 [US5] Test sequential flow: start at first chapter, click "Next" repeatedly, verify chapters load in correct module/sidebar order
 
 **Checkpoint**: All user stories (1, 2, 3, 4, 5) are now independently functional. Full textbook experience complete.
 
@@ -182,18 +182,18 @@
 
 **Purpose**: Improvements that affect multiple user stories and final quality checks
 
-- [ ] T073 [P] Add dark mode support: verify frontend/docusaurus.config.ts colorMode config includes defaultMode and respectPrefersColorScheme
-- [ ] T074 [P] Optimize ChatbotWidget mobile responsiveness: test on iOS Safari and Android Chrome, adjust styles if needed for small screens
+- [X] T073 [P] Add dark mode support: verify frontend/docusaurus.config.ts colorMode config includes defaultMode and respectPrefersColorScheme
+- [X] T074 [P] Optimize ChatbotWidget mobile responsiveness: test on iOS Safari and Android Chrome, adjust styles if needed for small screens
 - [ ] T075 [P] Add custom CSS in frontend/src/css/custom.css for global styling (if needed for branding)
 - [ ] T076 [P] Add logo and favicon in frontend/static/img/ directory
-- [ ] T077 [P] Update frontend/docusaurus.config.ts title, tagline, and footer to reflect Physical AI Textbook branding
+- [X] T077 [P] Update frontend/docusaurus.config.ts title, tagline, and footer to reflect Physical AI Textbook branding
 - [ ] T078 [P] Test cross-browser compatibility: verify site works on Chrome, Firefox, Safari, Edge (latest versions)
 - [ ] T079 [P] Run Lighthouse accessibility audit on deployed site: aim for score ≥90 (per Success Criterion SC-006)
-- [ ] T080 [P] Verify all chapters follow educational standards: ≤5 concepts per chapter, B1 English proficiency, ≥1 code example
+- [X] T080 [P] Verify all chapters follow educational standards: ≤5 concepts per chapter, B1 English proficiency, ≥1 code example
 - [ ] T081 [P] Test chatbot performance: submit 5 different queries, verify average response time <10 seconds (per Success Criterion SC-002)
 - [ ] T082 [P] Test page load performance: use browser DevTools Performance tab, verify homepage loads <3 seconds (per Success Criterion SC-004)
-- [ ] T083 Code cleanup: remove any console.log statements, unused imports, commented-out code
-- [ ] T084 Documentation: update README.md in repository root with project overview, setup instructions, deployment guide
+- [X] T083 Code cleanup: remove any console.log statements, unused imports, commented-out code
+- [X] T084 Documentation: update README.md in repository root with project overview, setup instructions, deployment guide
 - [ ] T085 Final verification: run through quickstart.md validation checklist to ensure all features work end-to-end
 
 ---
