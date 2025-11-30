@@ -1,0 +1,74 @@
+/**
+ * SelectionTooltip Styles
+ *
+ * Floating tooltip that appears near selected text
+ */
+
+/* Tooltip container */
+.tooltip {
+  position: absolute;
+  z-index: 1001; /* Above chatbot widget (z-index: 1000) */
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  padding: 4px;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Dark mode support */
+[data-theme='dark'] .tooltip {
+  background: #2a2a2a;
+  border: 1px solid #444;
+}
+
+/* Ask button */
+.askButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.2s;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.askButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.askButton:active {
+  transform: scale(0.95);
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .tooltip {
+    /* Ensure tooltip stays within viewport on mobile */
+    max-width: calc(100vw - 32px);
+  }
+
+  .askButton {
+    font-size: 13px;
+    padding: 7px 12px;
+  }
+}

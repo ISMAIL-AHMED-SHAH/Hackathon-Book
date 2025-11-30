@@ -10,9 +10,10 @@
  * - Response rendering with source citations
  * - Error handling for API failures
  * - Loading states
+ * - Selected text context support
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { useChapterId } from '@site/src/hooks/useChapterId';
 import { useApiClient } from '@site/src/hooks/useApiClient';
 import type {
@@ -24,10 +25,15 @@ import type {
 import { GUEST_USER_ID } from '@site/src/types';
 import styles from './styles.module.css';
 
-export default function ChatbotWidget(): JSX.Element {
+export interface ChatbotWidgetRef {
+  openWithSelectedText: (text: string) => void;
+}
+
+const ChatbotWidget = forwardRef<ChatbotWidgetRef, {}>((props, ref) => {
   // State management
   const [isOpen, setIsOpen] = useState(false);
   const [currentQuery, setCurrentQuery] = useState('');
+  const [selectedText, setSelectedText] = useState<string | null>(null);
   const [conversationHistory, setConversationHistory] = useState<ConversationTurn[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,6 +41,15 @@ export default function ChatbotWidget(): JSX.Element {
   // Hooks
   const chapterId = useChapterId();
   const { postQuery } = useApiClient();
+
+  // Expose methods to parent via ref
+  useImperativeHandle(ref, () => ({
+    openWithSelectedText: (text: string) => {
+      setSelectedText(text);
+      setIsOpen(true);
+      setCurrentQuery(''); // Clear any existing query
+    },
+  }));
 
   /**
    * Handle query submission
@@ -52,6 +67,7 @@ export default function ChatbotWidget(): JSX.Element {
       query_text: currentQuery.trim(),
       chapter_id: chapterId,
       user_id: GUEST_USER_ID,
+      ...(selectedText && { selected_text: selectedText }),
     };
 
     setIsLoading(true);
