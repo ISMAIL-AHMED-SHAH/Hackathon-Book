@@ -75,17 +75,17 @@ class QueryRequest(BaseModel):
         ],
     )
 
-    chapter_id: str = Field(
-        ...,
+    chapter_id: Optional[str] = Field(
+        default=None,
         pattern=r"^ch-[a-z0-9-]{3,50}$",
-        description="Chapter identifier to scope context retrieval (format: ch-{slug})",
-        examples=["ch-ros2-fundamentals", "ch-isaac-sim-intro"],
+        description="Chapter identifier to scope context retrieval (format: ch-{slug}), optional for global search",
+        examples=["ch-ros2-fundamentals", "ch-isaac-sim-intro", None],
     )
 
     user_id: str = Field(
-        ...,
-        description="Authenticated user's UUID (v4 format), extracted from JWT token",
-        examples=["550e8400-e29b-41d4-a716-446655440000"],
+        default="guest-user",
+        description="User identifier (UUID v4 for authenticated users, or 'guest-user' for anonymous)",
+        examples=["550e8400-e29b-41d4-a716-446655440000", "guest-user"],
     )
 
     top_k: int = Field(
@@ -133,7 +133,11 @@ class QueryRequest(BaseModel):
     @classmethod
     def validate_user_id_format(cls, v: str) -> str:
         """
-        Validate UUIDv4 format (FR-002).
+        Validate user ID format (FR-002).
+
+        Accepts either:
+        - UUIDv4 format for authenticated users
+        - "guest-user" literal for anonymous users
 
         Args:
             v: User ID string
@@ -142,30 +146,39 @@ class QueryRequest(BaseModel):
             Normalized user ID (lowercase)
 
         Raises:
-            ValueError: If user_id is not a valid UUIDv4
+            ValueError: If user_id is neither a valid UUIDv4 nor "guest-user"
         """
+        # Allow guest-user for anonymous access
+        if v.lower() == "guest-user":
+            return "guest-user"
+
+        # Otherwise, validate as UUIDv4
         try:
             UUID(v, version=4)
         except ValueError:
-            raise ValueError("user_id must be a valid UUIDv4")
+            raise ValueError("user_id must be a valid UUIDv4 or 'guest-user'")
         return v.lower()  # Normalize to lowercase
 
     @field_validator("chapter_id")
     @classmethod
-    def sanitize_chapter_id(cls, v: str) -> str:
+    def sanitize_chapter_id(cls, v: Optional[str]) -> Optional[str]:
         """
         Sanitize chapter_id to prevent injection (FR-013).
 
         Args:
-            v: Chapter ID string
+            v: Chapter ID string or None for global search
 
         Returns:
-            Sanitized chapter ID (lowercase)
+            Sanitized chapter ID (lowercase) or None
 
         Raises:
             ValueError: If chapter_id doesn't match required pattern
         """
-        # Remove any characters that could be used for injection
+        # Allow None for global search (no chapter filter)
+        if v is None:
+            return None
+
+        # Validate pattern to prevent injection
         if not re.match(r"^ch-[a-z0-9-]{3,50}$", v):
             raise ValueError("Invalid chapter_id format. Must match pattern: ch-[a-z0-9-]{3,50}")
         return v.lower()
