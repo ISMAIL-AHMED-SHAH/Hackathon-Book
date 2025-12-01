@@ -78,7 +78,12 @@ export function useApiClient(): ApiClientReturn {
 
       // Handle timeout errors
       if (error instanceof Error && error.name === 'AbortError') {
-        throw new Error('Request timeout - please try again');
+        throw new Error('Request timeout - The server is taking too long to respond. Please try again.');
+      }
+
+      // Handle network errors
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error(`Unable to connect to the backend API at ${apiUrl}. The server may be starting up (this can take up to 60 seconds on first request). Please try again in a moment.`);
       }
 
       // Re-throw other errors

@@ -27,7 +27,7 @@ interface SelectionTooltipProps {
 }
 
 export default function SelectionTooltip({ onAskAboutText }: SelectionTooltipProps): JSX.Element | null {
-  const selection = useTextSelection();
+  const { selection } = useTextSelection();
   const [isVisible, setIsVisible] = useState(false);
   const [virtualElement, setVirtualElement] = useState<{
     getBoundingClientRect: () => DOMRect;
@@ -48,10 +48,12 @@ export default function SelectionTooltip({ onAskAboutText }: SelectionTooltipPro
     if (selection && selection.text && selection.text.trim().length > 0) {
       // Create virtual element from selection range
       const range = selection.range;
-      setVirtualElement({
-        getBoundingClientRect: () => range,
-      });
-      setIsVisible(true);
+      if (range) {
+        setVirtualElement({
+          getBoundingClientRect: () => range,
+        });
+        setIsVisible(true);
+      }
     } else {
       setIsVisible(false);
       setVirtualElement(null);
