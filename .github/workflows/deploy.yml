@@ -42,8 +42,9 @@ jobs:
 
       - name: Build website
         env:
-          REACT_APP_API_URL: http://localhost:8000  # Local development URL (update when backend is deployed)
-          REACT_APP_API_TIMEOUT: 30000
+          NODE_ENV: production
+          REACT_APP_API_URL: https://ismail-ahmed-shah-humanoid-robotics.hf.space
+          REACT_APP_API_TIMEOUT: 60000
         run: npm run build
 
       - name: Upload artifact

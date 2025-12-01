@@ -4,10 +4,11 @@ import type * as Preset from '@docusaurus/preset-classic';
 import * as dotenv from 'dotenv';
 
 // Load environment variables from .env files
+// Only load from file if env vars are not already set (e.g., in CI/CD)
 const envFile = process.env.NODE_ENV === 'production'
   ? '.env.production'
   : '.env.development';
-dotenv.config({ path: envFile });
+dotenv.config({ path: envFile, override: false }); // Don't override existing env vars
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
