@@ -29,7 +29,7 @@ export interface ChatbotWidgetRef {
   openWithSelectedText: (text: string) => void;
 }
 
-const ChatbotWidget = forwardRef<ChatbotWidgetRef, {}>((props, ref) => {
+const ChatbotWidget = forwardRef<ChatbotWidgetRef>((props, ref) => {
   // State management
   const [isOpen, setIsOpen] = useState(false);
   const [currentQuery, setCurrentQuery] = useState('');
@@ -86,6 +86,7 @@ const ChatbotWidget = forwardRef<ChatbotWidgetRef, {}>((props, ref) => {
 
       setConversationHistory([...conversationHistory, turn]);
       setCurrentQuery(''); // Clear input
+      setSelectedText(null); // Clear selected text context
     } catch (err) {
       // Handle errors
       const errorMessage = err instanceof Error ? err.message : 'Failed to get response';
@@ -198,13 +199,34 @@ const ChatbotWidget = forwardRef<ChatbotWidgetRef, {}>((props, ref) => {
             )}
           </div>
 
+          {/* Selected text context (if available) */}
+          {selectedText && (
+            <div className={styles.selectedTextContext}>
+              <div className={styles.selectedTextLabel}>
+                <strong>Selected:</strong>
+                <button
+                  onClick={() => setSelectedText(null)}
+                  className={styles.clearButton}
+                  aria-label="Clear selected text"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className={styles.selectedTextContent}>
+                {selectedText.length > 100
+                  ? `${selectedText.substring(0, 100)}...`
+                  : selectedText}
+              </div>
+            </div>
+          )}
+
           {/* Input form */}
           <form onSubmit={handleSubmit} className={styles.inputForm}>
             <input
               type="text"
               value={currentQuery}
               onChange={(e) => setCurrentQuery(e.target.value)}
-              placeholder="Ask a question..."
+              placeholder={selectedText ? "Ask about the selected text..." : "Ask a question..."}
               className={styles.input}
               disabled={isLoading}
               aria-label="Question input"
@@ -222,4 +244,6 @@ const ChatbotWidget = forwardRef<ChatbotWidgetRef, {}>((props, ref) => {
       )}
     </>
   );
-}
+});
+
+export default ChatbotWidget;

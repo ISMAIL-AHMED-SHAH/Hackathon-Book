@@ -1,0 +1,31 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Favicon: Simplified AI robot icon -->
+  <defs>
+    <linearGradient id="faviconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="30" fill="url(#faviconGradient)"/>
+
+  <!-- Robot face -->
+  <rect x="16" y="22" width="32" height="26" rx="4" fill="white" opacity="0.95"/>
+
+  <!-- Eyes -->
+  <circle cx="24" cy="32" r="4" fill="#667eea"/>
+  <circle cx="40" cy="32" r="4" fill="#667eea"/>
+
+  <!-- Eye highlights -->
+  <circle cx="25" cy="31" r="1.5" fill="white"/>
+  <circle cx="41" cy="31" r="1.5" fill="white"/>
+
+  <!-- Smile/circuit mouth -->
+  <path d="M 22 40 Q 32 44 42 40" stroke="#667eea" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Antenna signal -->
+  <line x1="32" y1="16" x2="32" y2="22" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="32" cy="14" r="3" fill="white"/>
+  <circle cx="32" cy="14" r="1.5" fill="#667eea"/>
+</svg>

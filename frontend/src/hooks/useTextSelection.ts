@@ -33,7 +33,8 @@ export function useTextSelection(): UseTextSelectionReturn {
         return;
       }
 
-      const text = sel.toString().trim();
+      const selectionText = sel.toString();
+      const text = selectionText ? selectionText.trim() : '';
 
       // Empty selection (just a cursor)
       if (text.length === 0) {

@@ -60,15 +60,50 @@
   }
 }
 
+/* Touch-friendly sizing for tablets */
+@media (max-width: 996px) and (min-width: 769px) {
+  .tooltip {
+    max-width: calc(100vw - 48px);
+  }
+
+  .askButton {
+    font-size: 14px;
+    padding: 10px 16px;
+    min-height: 44px; /* Accessibility touch target */
+  }
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
   .tooltip {
     /* Ensure tooltip stays within viewport on mobile */
     max-width: calc(100vw - 32px);
+    padding: 6px;
+  }
+
+  .askButton {
+    font-size: 14px;
+    padding: 10px 16px;
+    min-width: 150px;
+    min-height: 44px; /* iOS/Android recommended touch target */
+    white-space: normal; /* Allow text wrapping if needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+}
+
+/* Small mobile (< 480px) */
+@media (max-width: 480px) {
+  .tooltip {
+    max-width: calc(100vw - 24px);
+    padding: 4px;
   }
 
   .askButton {
     font-size: 13px;
-    padding: 7px 12px;
+    padding: 8px 14px;
+    min-height: 44px;
   }
 }

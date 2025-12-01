@@ -11,18 +11,47 @@ import styles from './index.module.css';
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
-          </Link>
+    <header className={styles.heroBanner}>
+      <div className={styles.heroContainer}>
+        <div className={styles.heroContent}>
+          <div className={styles.heroTitle}>
+            <span className={styles.titlePhysical}>Physical AI &</span>
+            <span className={styles.titleHumanoid}>Humanoid Robotics</span>
+          </div>
+
+          <p className={styles.heroSubtitle}>
+            Building Intelligent Humanoid Robots with AI – <span className={styles.specDriven}>Spec Driven Reusable Intelligence</span>
+          </p>
+
+          <div className={styles.badges}>
+            <div className={styles.badge}>
+              <span className={styles.badgeIcon}>✨</span>
+              <span>Open Source</span>
+            </div>
+            <div className={styles.badge}>
+              <span className={styles.badgeIcon}>🤝</span>
+              <span>Co-Learning with AI</span>
+            </div>
+            <div className={styles.badge}>
+              <span className={styles.badgeIcon}>🎯</span>
+              <span>Spec-Driven Development</span>
+            </div>
+          </div>
+
+          <div className={styles.buttons}>
+            <Link
+              className={clsx('button button--lg', styles.btnPrimary)}
+              to="/docs/intro">
+              <span>Start Learning</span>
+              <span className={styles.btnIcon}>📚</span>
+            </Link>
+            <Link
+              className={clsx('button button--lg', styles.btnSecondary)}
+              to="https://github.com/ISMAIL-AHMED-SHAH/Hackathon-Book">
+              <span>View on GitHub</span>
+              <span className={styles.btnIcon}>⭐</span>
+            </Link>
+          </div>
         </div>
       </div>
     </header>

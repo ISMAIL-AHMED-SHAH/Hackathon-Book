@@ -28,6 +28,12 @@ export function useChapterId(): string | null {
     return null;
   }
 
+  // Ensure location and pathname exist
+  if (!location || !location.pathname) {
+    console.warn('[useChapterId] Location or pathname not available');
+    return null;
+  }
+
   // Normalize pathname: remove trailing slashes and hash fragments
   let pathname = location.pathname;
   pathname = pathname.replace(/\/$/, ''); // Remove trailing slash

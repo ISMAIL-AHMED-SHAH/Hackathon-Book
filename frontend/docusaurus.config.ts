@@ -14,7 +14,7 @@ dotenv.config({ path: envFile });
 const config: Config = {
   title: 'Physical AI & Humanoid Robotics Textbook',
   tagline: 'Learn ROS 2, Gazebo, NVIDIA Isaac, and Vision-Language-Action Models',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon-ai.svg',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -98,8 +98,8 @@ const config: Config = {
     navbar: {
       title: 'Physical AI Textbook',
       logo: {
-        alt: 'Physical AI Logo',
-        src: 'img/logo.svg',
+        alt: 'Physical AI Robot Logo',
+        src: 'img/physical-ai-logo.svg',
       },
       items: [
         {

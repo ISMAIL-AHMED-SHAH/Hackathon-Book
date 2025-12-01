@@ -1,23 +1,284 @@
 /**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
+ * Landing Page - Neon Gradient Design
+ * Inspired by modern AI/robotics aesthetics with cyan/blue gradient theme
  */
 
 .heroBanner {
-  padding: 4rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
-}
-
-.buttons {
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #0f3460 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 4rem 2rem;
+}
+
+/* Animated background effect */
+.heroBanner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 242, 254, 0.05) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.heroContainer {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.heroContent {
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Hero Title with Neon Gradient */
+.heroTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.titlePhysical {
+  font-size: 3.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00d4ff 0%, #7b2cbf 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+  animation: glow 3s ease-in-out infinite alternate;
+}
+
+.titleHumanoid {
+  font-size: 3.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+  animation: glow 3s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes glow {
+  from {
+    filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.3));
+  }
+  to {
+    filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.6));
+  }
+}
+
+/* Subtitle */
+.heroSubtitle {
+  font-size: 1.4rem;
+  color: #e0e0e0;
+  margin-bottom: 3rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.specDriven {
+  color: #00f2fe;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+}
+
+/* Feature Badges */
+.badges {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(0, 242, 254, 0.1);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  border-radius: 50px;
+  color: #00f2fe;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.badge:hover {
+  background: rgba(0, 242, 254, 0.2);
+  border-color: rgba(0, 242, 254, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
+}
+
+.badgeIcon {
+  font-size: 1.2rem;
+}
+
+/* CTA Buttons */
+.buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btnPrimary {
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  border: none;
+  color: #0a0e27;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 242, 254, 0.4);
+}
+
+.btnPrimary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 30px rgba(0, 242, 254, 0.6);
+  color: #0a0e27;
+}
+
+.btnSecondary {
+  background: transparent;
+  border: 2px solid #00f2fe;
+  color: #00f2fe;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btnSecondary:hover {
+  background: rgba(0, 242, 254, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
+  color: #00f2fe;
+}
+
+.btnIcon {
+  font-size: 1.2rem;
+}
+
+/* Responsive Design */
+
+/* Tablet */
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    min-height: auto;
+    padding: 3rem 1.5rem;
+  }
+
+  .titlePhysical,
+  .titleHumanoid {
+    font-size: 2.8rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.2rem;
+  }
+
+  .badges {
+    gap: 0.75rem;
+  }
+
+  .badge {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 768px) {
+  .heroBanner {
+    padding: 2rem 1rem;
+  }
+
+  .titlePhysical,
+  .titleHumanoid {
+    font-size: 2.2rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  .badges {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .badge {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+  }
+}
+
+/* Small Mobile */
+@media screen and (max-width: 480px) {
+  .titlePhysical,
+  .titleHumanoid {
+    font-size: 1.8rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+
+  .badge {
+    font-size: 0.85rem;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.95rem;
+  }
 }

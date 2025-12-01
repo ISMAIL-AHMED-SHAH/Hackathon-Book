@@ -45,7 +45,7 @@ export default function SelectionTooltip({ onAskAboutText }: SelectionTooltipPro
 
   // Update virtual element when selection changes
   useEffect(() => {
-    if (selection && selection.text.trim().length > 0) {
+    if (selection && selection.text && selection.text.trim().length > 0) {
       // Create virtual element from selection range
       const range = selection.range;
       setVirtualElement({

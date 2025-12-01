@@ -1,30 +1,538 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Custom CSS for Physical AI & Humanoid Robotics Textbook
+ *
+ * Branding: Purple/blue gradient theme matching robotics/AI aesthetics
+ * Optimized for educational content readability
  */
 
-/* You can override the default Infima variables here. */
+/* Physical AI Branding - Purple/Blue color scheme */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  /* Primary brand color - Deep purple for AI/robotics theme */
+  --ifm-color-primary: #667eea;
+  --ifm-color-primary-dark: #5567e6;
+  --ifm-color-primary-darker: #4f5fe4;
+  --ifm-color-primary-darkest: #3849d9;
+  --ifm-color-primary-light: #7795ee;
+  --ifm-color-primary-lighter: #839df0;
+  --ifm-color-primary-lightest: #a3b4f5;
+
+  /* Enhanced code display */
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --docusaurus-highlighted-code-line-bg: rgba(102, 126, 234, 0.1);
+
+  /* Improved typography for educational content */
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.7;
+  --ifm-heading-font-weight: 600;
+
+  /* Accent colors for educational elements */
+  --ifm-color-info: #667eea;
+  --ifm-color-success: #10b981;
+  --ifm-color-warning: #f59e0b;
+  --ifm-color-danger: #ef4444;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
+/* Dark mode - Lighter purple palette for better contrast */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: #8899ff;
+  --ifm-color-primary-dark: #6f7fff;
+  --ifm-color-primary-darker: #6575ff;
+  --ifm-color-primary-darkest: #3d51ff;
+  --ifm-color-primary-light: #a1b3ff;
+  --ifm-color-primary-lighter: #adbdff;
+  --ifm-color-primary-lightest: #ccd6ff;
+
+  --docusaurus-highlighted-code-line-bg: rgba(136, 153, 255, 0.15);
+
+  /* Enhanced background colors for dark mode */
+  --ifm-background-color: #1a1a1a;
+  --ifm-background-surface-color: #242424;
+}
+
+/* Enhanced code blocks for educational content */
+.prism-code {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  border-radius: 8px;
+}
+
+/* Improve table of contents visibility */
+.table-of-contents {
+  font-size: 0.9rem;
+}
+
+.table-of-contents__link--active {
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+}
+
+/* Educational content enhancements */
+article p {
+  margin-bottom: 1.2em;
+}
+
+article h2 {
+  margin-top: 2em;
+  margin-bottom: 0.8em;
+  font-size: 1.8rem;
+}
+
+article h3 {
+  margin-top: 1.6em;
+  margin-bottom: 0.6em;
+  font-size: 1.4rem;
+}
+
+/* Code inline emphasis */
+code {
+  background-color: rgba(102, 126, 234, 0.08);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 4px;
+  padding: 0.1em 0.4em;
+}
+
+[data-theme='dark'] code {
+  background-color: rgba(136, 153, 255, 0.12);
+  border-color: rgba(136, 153, 255, 0.25);
+}
+
+/* Admonitions (info boxes) styling */
+.admonition {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Smooth scroll behavior for better navigation */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Footer branding */
+.footer {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.footer a {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.footer a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Navbar branding enhancement */
+.navbar {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.navbar__logo {
+  height: 2rem;
+}
+
+/* Sidebar improvements for better navigation */
+.menu__link {
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.menu__link:hover {
+  background-color: rgba(102, 126, 234, 0.08);
+}
+
+.menu__link--active {
+  background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+  border-left: 3px solid var(--ifm-color-primary);
+  padding-left: calc(var(--ifm-menu-link-padding-horizontal) - 3px);
+}
+
+/* Search button enhancement */
+.DocSearch-Button {
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.DocSearch-Button:hover {
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+}
+
+/* Pagination (Next/Previous chapter) styling */
+.pagination-nav__link {
+  border-radius: 8px;
+  border: 2px solid var(--ifm-color-emphasis-200);
+  transition: all 0.2s ease;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+/* Dropdown menu styling */
+.dropdown__menu {
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  padding: 8px;
+  min-width: 200px;
+}
+
+[data-theme='dark'] .dropdown__menu {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+.dropdown__link {
+  border-radius: 6px;
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+}
+
+.dropdown__link:hover {
+  background-color: rgba(102, 126, 234, 0.08);
+  color: var(--ifm-color-primary);
+}
+
+.dropdown__link--active {
+  background-color: rgba(102, 126, 234, 0.15);
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+/* Mobile menu (hamburger) improvements */
+.navbar-sidebar {
+  background-color: var(--ifm-background-color);
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .navbar-sidebar {
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-sidebar__item {
+  padding: 4px 0;
+}
+
+.navbar-sidebar__brand {
+  padding: 16px;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  margin-bottom: 8px;
+}
+
+/* Mobile sidebar menu links */
+.menu__list-item {
+  margin: 4px 0;
+}
+
+.menu__list-item-collapsible {
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.menu__list-item-collapsible:hover {
+  background-color: rgba(102, 126, 234, 0.05);
+}
+
+/* Enhanced navbar items for better touch targets on mobile */
+.navbar__item {
+  padding: 8px 12px;
+}
+
+.navbar__link {
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.navbar__link:hover {
+  background-color: rgba(102, 126, 234, 0.08);
+  color: var(--ifm-color-primary);
+}
+
+.navbar__link--active {
+  background-color: rgba(102, 126, 234, 0.12);
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+/* Breadcrumbs styling */
+.breadcrumbs__link {
+  border-radius: 4px;
+  padding: 2px 6px;
+  transition: all 0.2s ease;
+}
+
+.breadcrumbs__link:hover {
+  background-color: rgba(102, 126, 234, 0.08);
+  color: var(--ifm-color-primary);
+}
+
+/* Enhanced button styling across the site */
+.button {
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.button--primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+}
+
+.button--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.button--secondary {
+  border: 2px solid var(--ifm-color-primary);
+}
+
+.button--secondary:hover {
+  background-color: rgba(102, 126, 234, 0.08);
+}
+
+/* Tablet breakpoint (768px - 996px) */
+@media (max-width: 996px) and (min-width: 769px) {
+  :root {
+    --ifm-font-size-base: 15px;
+  }
+
+  article h2 {
+    font-size: 1.7rem;
+  }
+
+  article h3 {
+    font-size: 1.35rem;
+  }
+
+  /* Adjust sidebar width for tablets */
+  .theme-doc-sidebar-container {
+    min-width: 280px !important;
+  }
+}
+
+/* Mobile breakpoint (up to 768px) */
+@media (max-width: 768px) {
+  :root {
+    --ifm-font-size-base: 14px;
+    --ifm-line-height-base: 1.6;
+  }
+
+  /* Headings */
+  article h1 {
+    font-size: 1.8rem;
+  }
+
+  article h2 {
+    font-size: 1.5rem;
+    margin-top: 1.5em;
+  }
+
+  article h3 {
+    font-size: 1.25rem;
+    margin-top: 1.2em;
+  }
+
+  article h4 {
+    font-size: 1.1rem;
+  }
+
+  /* Better spacing on mobile */
+  article p {
+    margin-bottom: 1em;
+  }
+
+  /* Code blocks on mobile */
+  .prism-code {
+    font-size: 0.85rem;
+    padding: 12px;
+  }
+
+  /* Tables responsive scroll */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Pagination buttons on mobile */
+  .pagination-nav__link {
+    padding: 12px;
+  }
+
+  .pagination-nav__label {
+    font-size: 0.9rem;
+  }
+
+  /* Navbar items spacing */
+  .navbar__item {
+    padding: 6px 8px;
+  }
+
+  /* TOC on mobile (usually hidden, but if shown) */
+  .table-of-contents {
+    font-size: 0.85rem;
+  }
+
+  /* Search on mobile */
+  .DocSearch-Button {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  /* Footer columns stack on mobile */
+  .footer__links {
+    margin-bottom: 1rem;
+  }
+
+  .footer__col {
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Small mobile breakpoint (up to 480px) */
+@media (max-width: 480px) {
+  :root {
+    --ifm-font-size-base: 14px;
+  }
+
+  /* Even smaller headings for tiny screens */
+  article h1 {
+    font-size: 1.6rem;
+  }
+
+  article h2 {
+    font-size: 1.4rem;
+  }
+
+  article h3 {
+    font-size: 1.2rem;
+  }
+
+  /* Compact navbar */
+  .navbar__title {
+    font-size: 1rem;
+  }
+
+  .navbar__logo {
+    height: 1.75rem;
+  }
+
+  /* Compact pagination */
+  .pagination-nav__link {
+    padding: 10px;
+  }
+
+  .pagination-nav__sublabel {
+    display: none; /* Hide "Next"/"Previous" labels on tiny screens */
+  }
+
+  /* Code blocks even more compact */
+  .prism-code {
+    font-size: 0.8rem;
+    padding: 10px;
+  }
+
+  code {
+    font-size: 0.85em;
+  }
+
+  /* Buttons full width on tiny screens */
+  .button {
+    width: 100%;
+    display: block;
+  }
+}
+
+/* Large desktop breakpoint (1400px+) */
+@media (min-width: 1400px) {
+  :root {
+    --ifm-font-size-base: 17px;
+  }
+
+  /* Wider content area on large screens */
+  .container {
+    max-width: 1320px;
+  }
+
+  article h2 {
+    font-size: 2rem;
+  }
+
+  article h3 {
+    font-size: 1.5rem;
+  }
+
+  /* Larger TOC on big screens */
+  .table-of-contents {
+    font-size: 1rem;
+  }
+}
+
+/* Landscape mobile orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* Compact vertical spacing in landscape */
+  article h2 {
+    margin-top: 1.2em;
+  }
+
+  article h3 {
+    margin-top: 1em;
+  }
+
+  /* Navbar more compact */
+  .navbar {
+    min-height: 50px;
+  }
+}
+
+/* High DPI / Retina screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Ensure crisp rendering */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Prefers reduced motion (accessibility) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print styles for offline reading */
+@media print {
+  .navbar,
+  .footer,
+  .pagination-nav,
+  .table-of-contents,
+  .theme-doc-sidebar-container {
+    display: none !important;
+  }
+
+  article {
+    max-width: 100%;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+  }
+
+  code {
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
 }

@@ -299,6 +299,70 @@
   color: #f88;
 }
 
+/* Selected text context */
+.selectedTextContext {
+  padding: 12px 16px;
+  background: #f0f7ff;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+[data-theme='dark'] .selectedTextContext {
+  background: #1a2332;
+  border-top-color: #333;
+  border-bottom-color: #333;
+}
+
+.selectedTextLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: #667eea;
+}
+
+[data-theme='dark'] .selectedTextLabel {
+  color: #8899ff;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.clearButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #666;
+}
+
+[data-theme='dark'] .clearButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ccc;
+}
+
+.selectedTextContent {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+[data-theme='dark'] .selectedTextContent {
+  color: #aaa;
+}
+
 /* Input form */
 .inputForm {
   display: flex;
