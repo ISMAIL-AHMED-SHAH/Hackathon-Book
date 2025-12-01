@@ -53,14 +53,18 @@ class LLMService:
         False
     """
 
-    # Refusal detection patterns per FR-004
+    # Refusal detection patterns per FR-004 (enhanced for relevance)
     REFUSAL_PATTERNS = [
         r"I don't have enough information",
+        r"I don't know",
+        r"irrelevant to the book",
         r"I cannot answer",
         r"insufficient information",
         r"not enough context",
         r"context does not contain",
         r"unable to answer",
+        r"outside the scope",
+        r"not covered in this",
     ]
 
     def __init__(self, client: AsyncOpenAI, settings: Settings) -> None:
@@ -105,19 +109,24 @@ class LLMService:
             f"[{i+1}] {chunk.content}" for i, chunk in enumerate(context_chunks)
         )
 
-        # System prompt template per research.md Decision 3
-        system_prompt = f"""You are an expert tutor for a Physical AI & Humanoid Robotics course.
-Answer the student's question using ONLY the provided context chunks below.
+        # System prompt template with stronger relevance enforcement
+        system_prompt = f"""You are an expert tutor for a Physical AI & Humanoid Robotics textbook.
 
-If the context does not contain sufficient information to answer accurately,
-respond with: "I don't have enough information in this chapter to answer that."
+CRITICAL RULES:
+1. Answer ONLY using the provided context chunks below
+2. If the question is NOT about Physical AI, Humanoid Robotics, ROS 2, Isaac Sim, Gazebo, or VLA models, respond EXACTLY with:
+   "I don't know. This question is irrelevant to the book."
+3. If the question IS relevant but the context lacks sufficient information, respond with:
+   "I don't have enough information in this chapter to answer that."
+4. NEVER use external knowledge or speculation
+5. Stay strictly within the book's scope: Physical AI, Humanoid Robotics, ROS 2, simulation, and VLA
 
-Do not speculate or use knowledge outside the provided context.
-
-Context chunks:
+Context chunks from the textbook:
 {formatted_chunks}
 
-Question: {query_text}"""
+Student Question: {query_text}
+
+Answer:"""
 
         return system_prompt
 

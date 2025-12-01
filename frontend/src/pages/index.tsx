@@ -67,6 +67,13 @@ export default function Home(): ReactNode {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
+
+        {/* Author Section */}
+        <div className={styles.authorSection}>
+          <p className={styles.authorText}>
+            ✨ Written & Designed by <span className={styles.authorName}>Ismail Ahmed Shah</span> ✨
+          </p>
+        </div>
       </main>
     </Layout>
   );

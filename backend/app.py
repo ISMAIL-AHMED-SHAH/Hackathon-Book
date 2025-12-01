@@ -95,8 +95,10 @@ with gr.Blocks(title="Physical AI Textbook RAG Query") as demo:
     )
 
 if __name__ == "__main__":
+    import uvicorn
+
     # Mount FastAPI app to Gradio
     app = gr.mount_gradio_app(fastapi_app, demo, path="/")
 
-    # Launch combined app
-    demo.queue().launch(server_name="0.0.0.0", server_port=7860, share=False)
+    # Launch on HF Spaces with uvicorn for proper ASGI support
+    uvicorn.run(app, host="0.0.0.0", port=7860, log_level="info")

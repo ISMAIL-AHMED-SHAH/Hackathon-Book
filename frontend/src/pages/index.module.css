@@ -282,3 +282,132 @@
     font-size: 0.95rem;
   }
 }
+
+/* Author Section - Neon Glow Design */
+.authorSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #0f3460 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.authorSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.08) 0%, transparent 70%);
+  animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.authorText {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 1.5rem 3rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #e0e0e0;
+  text-align: center;
+  background: rgba(0, 242, 254, 0.05);
+  border: 2px solid transparent;
+  border-radius: 16px;
+  background-clip: padding-box;
+  position: relative;
+}
+
+.authorText::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #00f2fe, #4facfe, #00f2fe);
+  border-radius: 16px;
+  z-index: -1;
+  animation: borderGlow 3s linear infinite;
+  background-size: 200% 200%;
+}
+
+@keyframes borderGlow {
+  0% {
+    background-position: 0% 50%;
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.4),
+                0 0 40px rgba(0, 242, 254, 0.3),
+                inset 0 0 20px rgba(0, 242, 254, 0.1);
+  }
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0 0 30px rgba(0, 242, 254, 0.6),
+                0 0 60px rgba(0, 242, 254, 0.4),
+                inset 0 0 30px rgba(0, 242, 254, 0.2);
+  }
+  100% {
+    background-position: 0% 50%;
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.4),
+                0 0 40px rgba(0, 242, 254, 0.3),
+                inset 0 0 20px rgba(0, 242, 254, 0.1);
+  }
+}
+
+.authorName {
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  font-size: 1.4rem;
+  text-shadow: 0 0 30px rgba(0, 242, 254, 0.5);
+  animation: nameGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes nameGlow {
+  from {
+    filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.6));
+  }
+  to {
+    filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.9));
+  }
+}
+
+/* Mobile responsive for author section */
+@media screen and (max-width: 768px) {
+  .authorSection {
+    padding: 3rem 1rem;
+  }
+
+  .authorText {
+    padding: 1.2rem 2rem;
+    font-size: 1.1rem;
+  }
+
+  .authorName {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .authorText {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .authorName {
+    font-size: 1.1rem;
+  }
+}

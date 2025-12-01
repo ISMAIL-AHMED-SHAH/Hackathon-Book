@@ -14,7 +14,8 @@
       "Bash(else echo \"Script not found\")",
       "Bash(fi:*)",
       "Bash(python -m black:*)",
-      "Bash(python -c:*)"
+      "Bash(python -c:*)",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []

@@ -138,7 +138,12 @@ class Settings(BaseSettings):
     )
 
     cors_origins: list[str] = Field(
-        default=["http://localhost:3000", "http://localhost:8000"],
+        default=[
+            "http://localhost:3000",
+            "http://localhost:8000",
+            "https://ismail-ahmed-shah-humanoid-robotics.hf.space",
+            "https://ismail-ahmed-shah.github.io",
+        ],
         description="Allowed CORS origins",
         alias="CORS_ORIGINS",
     )

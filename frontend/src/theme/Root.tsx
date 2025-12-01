@@ -29,15 +29,14 @@ export default function Root({ children }: RootProps): JSX.Element {
   return (
     <>
       {children}
-      {/* Temporarily disabled chatbot and selection tooltip to debug crash */}
-      {/* <BrowserOnly fallback={<div></div>}>
+      <BrowserOnly fallback={<div></div>}>
         {() => (
           <>
             <ChatbotWidget ref={chatbotRef} />
             <SelectionTooltip onAskAboutText={handleAskAboutText} />
           </>
         )}
-      </BrowserOnly> */}
+      </BrowserOnly>
     </>
   );
 }
