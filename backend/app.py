@@ -3,14 +3,11 @@ Hugging Face Spaces entry point with Gradio wrapper for FastAPI backend.
 This allows the backend to run on HF Spaces while maintaining API endpoints.
 """
 import gradio as gr
-import uvicorn
-from threading import Thread
 from src.api.main import app as fastapi_app
 import httpx
-import os
 
 # Get the base URL for API calls
-API_BASE_URL = os.getenv("SPACE_HOST", "http://localhost:7860")
+API_BASE_URL = "http://localhost:7860"
 
 
 def query_rag(question: str, chapter_id: str = "") -> dict:
@@ -56,11 +53,6 @@ def gradio_interface(question: str, chapter_filter: str = "") -> tuple:
     return result["answer"], result["metadata"]
 
 
-# Start FastAPI in background thread
-def start_fastapi():
-    uvicorn.run(fastapi_app, host="0.0.0.0", port=7860, log_level="info")
-
-
 # Create Gradio interface
 with gr.Blocks(title="Physical AI Textbook RAG Query") as demo:
     gr.Markdown(
@@ -103,9 +95,8 @@ with gr.Blocks(title="Physical AI Textbook RAG Query") as demo:
     )
 
 if __name__ == "__main__":
-    # Start FastAPI in background
-    api_thread = Thread(target=start_fastapi, daemon=True)
-    api_thread.start()
+    # Mount FastAPI app to Gradio
+    app = gr.mount_gradio_app(fastapi_app, demo, path="/")
 
-    # Launch Gradio interface (shares same port with FastAPI)
+    # Launch combined app
     demo.queue().launch(server_name="0.0.0.0", server_port=7860, share=False)
