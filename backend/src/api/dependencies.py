@@ -19,9 +19,16 @@ Constitution Compliance:
 import asyncpg
 from openai import AsyncOpenAI
 from qdrant_client import QdrantClient
-from redis import asyncio as aioredis
+
+try:
+    from redis import asyncio as aioredis
+    REDIS_AVAILABLE = True
+except ImportError:
+    REDIS_AVAILABLE = False
+    aioredis = None  # type: ignore
 
 from src.core.config import Settings, get_settings
+from src.services.in_memory_cache import InMemoryRateLimiter, get_in_memory_limiter
 from src.services.logging import get_logger
 
 logger = get_logger(__name__)
@@ -34,7 +41,8 @@ logger = get_logger(__name__)
 # =============================================================================
 
 _qdrant_client: QdrantClient | None = None
-_redis_client: aioredis.Redis | None = None  # type: ignore[type-arg]
+_redis_client: aioredis.Redis | None = None if REDIS_AVAILABLE else None  # type: ignore[type-arg,misc]
+_in_memory_limiter: InMemoryRateLimiter | None = None
 _postgres_pool: asyncpg.Pool | None = None
 _openai_client: AsyncOpenAI | None = None
 
@@ -58,7 +66,7 @@ async def startup_clients() -> None:
     Raises:
         Exception: If any client initialization fails
     """
-    global _qdrant_client, _redis_client, _postgres_pool, _openai_client
+    global _qdrant_client, _redis_client, _in_memory_limiter, _postgres_pool, _openai_client
 
     settings = get_settings()
 
@@ -90,18 +98,31 @@ async def startup_clients() -> None:
         raise
 
     # Initialize Redis client (optional - for rate limiting)
-    try:
-        logger.info(f"Connecting to Redis: {settings.redis_url}")
-        _redis_client = await aioredis.from_url(
-            settings.redis_url,
-            encoding="utf-8",
-            decode_responses=True,
+    # Falls back to in-memory limiter if Redis unavailable
+    if REDIS_AVAILABLE:
+        try:
+            logger.info(f"Connecting to Redis: {settings.redis_url}")
+            _redis_client = await aioredis.from_url(
+                settings.redis_url,
+                encoding="utf-8",
+                decode_responses=True,
+            )
+            # Test connection
+            await _redis_client.ping()
+            logger.info("[OK] Redis connected")
+        except Exception as e:
+            logger.warning(f"[WARN] Redis connection failed, using in-memory rate limiter: {e}")
+            _redis_client = None
+            _in_memory_limiter = get_in_memory_limiter(
+                window_seconds=settings.rate_limit_window_seconds,
+                max_requests=settings.rate_limit_requests
+            )
+    else:
+        logger.info("[INFO] Redis not available, using in-memory rate limiter")
+        _in_memory_limiter = get_in_memory_limiter(
+            window_seconds=settings.rate_limit_window_seconds,
+            max_requests=settings.rate_limit_requests
         )
-        # Test connection
-        await _redis_client.ping()
-        logger.info("[OK] Redis connected")
-    except Exception as e:
-        logger.warning(f"[WARN] Redis connection failed (rate limiting disabled): {e}")
 
     # Initialize Neon Postgres pool (optional - for audit logging)
     try:
@@ -146,7 +167,7 @@ async def shutdown_clients() -> None:
     Called by FastAPI lifespan context manager.
     Closes connections to all external services.
     """
-    global _qdrant_client, _redis_client, _postgres_pool, _openai_client
+    global _qdrant_client, _redis_client, _in_memory_limiter, _postgres_pool, _openai_client
 
     logger.info("Shutting down application clients...")
 
@@ -217,24 +238,30 @@ def get_qdrant_client() -> QdrantClient:
     return _qdrant_client
 
 
-def get_redis_client() -> aioredis.Redis:  # type: ignore[type-arg]
+def get_redis_client() -> aioredis.Redis | InMemoryRateLimiter:  # type: ignore[type-arg,return]
     """
-    Get Redis cache client.
+    Get Redis cache client or in-memory fallback.
+
+    Returns Redis client if available, otherwise returns in-memory rate limiter.
+    Both provide compatible interfaces for rate limiting.
 
     Returns:
-        Initialized Redis async client
+        Redis async client or InMemoryRateLimiter
 
     Raises:
-        RuntimeError: If client not initialized (startup not called)
+        RuntimeError: If neither client nor fallback initialized
 
     Example:
         @app.post("/query")
-        async def query(redis: aioredis.Redis = Depends(get_redis_client)):
-            await redis.incr(f"rate_limit:{user_id}")
+        async def query(limiter = Depends(get_redis_client)):
+            if await limiter.is_rate_limited(user_id):
+                raise HTTPException(429)
     """
-    if _redis_client is None:
-        raise RuntimeError("Redis client not initialized. Call startup_clients() first.")
-    return _redis_client
+    if _redis_client is not None:
+        return _redis_client
+    if _in_memory_limiter is not None:
+        return _in_memory_limiter
+    raise RuntimeError("Neither Redis nor in-memory limiter initialized")
 
 
 def get_postgres_pool() -> asyncpg.Pool:
@@ -323,21 +350,25 @@ async def check_qdrant_health() -> dict[str, str]:
 
 async def check_redis_health() -> dict[str, str]:
     """
-    Check Redis connection health.
+    Check Redis connection health or in-memory fallback.
 
     Returns:
         Health status dict
 
     Example:
         {"status": "healthy"}
+        {"status": "healthy", "mode": "in-memory"}
         {"status": "unhealthy", "error": "Connection refused"}
     """
     try:
-        if _redis_client is None:
-            return {"status": "unhealthy", "error": "Client not initialized"}
-
-        await _redis_client.ping()
-        return {"status": "healthy"}
+        if _redis_client is not None:
+            await _redis_client.ping()
+            return {"status": "healthy", "mode": "redis"}
+        elif _in_memory_limiter is not None:
+            await _in_memory_limiter.ping()
+            return {"status": "healthy", "mode": "in-memory"}
+        else:
+            return {"status": "unhealthy", "error": "No rate limiter initialized"}
     except Exception as e:
         return {"status": "unhealthy", "error": str(e)}
 
